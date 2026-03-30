@@ -1,0 +1,21 @@
+# Unity (course): version only Assets, Packages, and ProjectSettings.
+# Library, Temp, Logs, UserSettings, and IDE-generated .csproj / .sln stay local.
+
+# Ignore everything at the repository root
+/*
+
+# Keep this ignore rules file
+!.gitignore
+
+# Track only these folders
+!/Assets/
+!/Packages/
+!/ProjectSettings/
+
+# Include all files inside them (required for Git to see nested files)
+!/Assets/**
+!/Packages/**
+!/ProjectSettings/**
+
+# Optional: skip macOS folder metadata inside tracked folders
+**/.DS_Store
