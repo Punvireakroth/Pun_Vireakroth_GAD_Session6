@@ -85,8 +85,12 @@ public class GameManager : MonoBehaviour
         Target[] targets = Object.FindObjectsByType<Target>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
         foreach (Target t in targets)
         {
-            if (t != null)
-                Object.Destroy(t.gameObject);
+            if (t == null)
+                continue;
+            // SpawnManager keeps an inactive "_SpawnTemplate" clone; never destroy it if it were active.
+            if (t.gameObject.name.StartsWith("_SpawnTemplate"))
+                continue;
+            Object.Destroy(t.gameObject);
         }
     }
 

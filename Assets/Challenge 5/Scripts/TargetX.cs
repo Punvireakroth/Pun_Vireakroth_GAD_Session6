@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,26 +16,24 @@ public class TargetX : MonoBehaviour
     private float spaceBetweenSquares = 2.5f; // the distance between the centers of squares on the game board
     
 
-    void Start()
+    void Start ()
     {
         rb = GetComponent<Rigidbody>();
-        gameManagerX = GameObject.Find("Game Manager").GetComponent<GameManagerX>();
+        GameObject gmGo = GameObject.Find("Game Manager");
+        if (gmGo != null)
+            gameManagerX = gmGo.GetComponent<GameManagerX>();
 
-        transform.position = RandomSpawnPosition(); 
-        StartCoroutine(RemoveObjectRoutine()); // begin timer before target leaves screen
-
+        transform.position = RandomSpawnPosition();
+        StartCoroutine(RemoveObjectRoutine());
     }
 
-    // When target is clicked, destroy it, update score, and generate explosion
-    private void OnMouseEnter()
+    private void OnMouseEnter ()
     {
-        if (gameManagerX.isGameActive)
-        {
-            Destroy(gameObject);
-            gameManagerX.UpdateScore(pointValue);
-            Explode();
-        }
-               
+        if (gameManagerX == null || !gameManagerX.isGameActive)
+            return;
+        Destroy(gameObject);
+        gameManagerX.UpdateScore(pointValue);
+        Explode();
     }
 
     // Generate a random spawn position based on a random index from 0 to 3
@@ -57,15 +55,12 @@ public class TargetX : MonoBehaviour
 
 
     // If target that is NOT the bad object collides with sensor, trigger game over
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter (Collider other)
     {
         Destroy(gameObject);
 
-        if (other.gameObject.CompareTag("Sensor") && !gameObject.CompareTag("Bad"))
-        {
+        if (gameManagerX != null && other.gameObject.CompareTag("Sensor") && !gameObject.CompareTag("Bad"))
             gameManagerX.GameOver();
-        } 
-
     }
 
     // Display explosion particle at object's position
@@ -78,10 +73,8 @@ public class TargetX : MonoBehaviour
     IEnumerator RemoveObjectRoutine ()
     {
         yield return new WaitForSeconds(timeOnScreen);
-        if (gameManagerX.isGameActive)
-        {
+        if (gameManagerX != null && gameManagerX.isGameActive)
             transform.Translate(Vector3.forward * 5, Space.World);
-        }
 
     }
 

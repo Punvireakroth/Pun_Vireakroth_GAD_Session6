@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+[DefaultExecutionOrder(-100)]
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject foodPrefab;
